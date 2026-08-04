@@ -35,6 +35,8 @@ description: Engineering-grade vibe coding workflow. Use when starting a new pro
 
 优先级:先把**最贵的约定**(违反后返工成本最高的:状态机、权限边界、幂等键)守住,再逐步覆盖。每写一条守护,故意违反一次,亲眼看到它红,才算完成。
 
+守护测试就位后,把它接入自动闸门:在项目根目录建 `eng-vibe.config.json` 写入 `{"guardCommand": "<快速守护命令>"}`(或在 package.json scripts 里定义 `guard`)。若本 skill 以 plugin 形式安装,每次文件编辑后守护 hook 会自动执行该命令,红了立刻拦截。守护命令只跑约定扫描类测试,须在几秒内完成。
+
 ## 第 3 步:小步迭代,每步闭环
 
 - 一次会话/一次任务只做一个 issue 大小的事。大需求先拆成 issue 列表,和用户确认优先级
@@ -55,7 +57,7 @@ description: Engineering-grade vibe coding workflow. Use when starting a new pro
 
 ## 第 5 步:生成和审查分离
 
-功能完成后,用**独立的子代理**(或明确切换角色)做对抗审查,审查者的任务是找茬而不是确认。审查清单见 [references/review-checklist.md](references/review-checklist.md),至少覆盖:
+功能完成后,用**独立的子代理**做对抗审查,审查者的任务是找茬而不是确认。若本 skill 以 plugin 形式安装,直接调用 `eng-vibe-reviewer` 子代理;否则按 [references/review-checklist.md](references/review-checklist.md) 新开会话切换审查角色。至少覆盖:
 
 - 权限与数据泄露:每个数据出口是否按角色脱敏?新字段默认可见还是默认不可见?(正确答案:白名单模式,默认不可见)
 - 并发与幂等:同一操作被并发/重放两次会怎样?

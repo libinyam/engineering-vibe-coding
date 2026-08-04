@@ -21,29 +21,45 @@ A Claude Code skill that pushes vibe coding from "a demo that runs" to "a produc
 
 ## 安装 / Install
 
-**项目级(推荐,随仓库共享给协作者)/ Per-project (recommended):**
+**方式一:Plugin(推荐,完整能力:skill + reviewer 子代理 + 守护 hook)/ As a plugin (recommended, full power):**
+
+在 Claude Code 里执行 / In Claude Code:
+
+```
+/plugin marketplace add libinyam/engineering-vibe-coding
+/plugin install eng-vibe@eng-vibe-marketplace
+```
+
+装上后你获得三层能力 / Three layers after install:
+
+| 层 / Layer | 组件 / Component | 机制 / Mechanism |
+|---|---|---|
+| 知识 / Knowledge | `eng-vibe` skill | 相关任务时自动加载六步工作流 / auto-loads the 6-step workflow |
+| 审查 / Review | `eng-vibe-reviewer` subagent | 每完成一个 issue 大小的功能,独立上下文对抗审查 / adversarial review in an isolated context after each issue-sized change |
+| 强制 / Enforcement | guard hook | 每次文件编辑后自动跑守护测试,红了直接拦截并强制修复 / runs guard tests after every file edit; failures block and bounce back |
+
+守护 hook 的接入方式:项目根目录建 `eng-vibe.config.json`,写 `{"guardCommand": "node test/guard.test.js"}`(或 package.json scripts 里定义 `guard` / `test:guard`)。没有配置的项目 hook 静默放行,零打扰。/ To wire the guard hook, add `eng-vibe.config.json` with a `guardCommand`, or a `guard` / `test:guard` npm script. Projects without one are silently skipped.
+
+**方式二:只装 skill(轻量)/ Skill only (lightweight):**
 
 ```bash
 git clone https://github.com/libinyam/engineering-vibe-coding.git
-mkdir -p .claude/skills
-cp -r engineering-vibe-coding/skills/eng-vibe .claude/skills/
-```
-
-**用户级(所有项目可用)/ User-level (all projects):**
-
-```bash
 cp -r engineering-vibe-coding/skills/eng-vibe ~/.claude/skills/
 ```
 
-安装后 Claude Code 会在相关任务时自动加载,也可显式调用 / Claude Code auto-loads it when relevant, or invoke explicitly:
-
-```
-/eng-vibe 开始一个新项目:<你的项目描述>
-```
+项目级则复制到项目的 `.claude/skills/` 下。/ For per-project install, copy into the project's `.claude/skills/`.
 
 ## 内容结构 / Structure
 
 ```
+.claude-plugin/
+  plugin.json                         # plugin 清单 / plugin manifest
+  marketplace.json                    # 让本仓库可被 /plugin marketplace add / makes this repo installable
+agents/
+  eng-vibe-reviewer.md                # 对抗审查子代理 / adversarial reviewer subagent
+hooks/
+  hooks.json                          # PostToolUse 事件绑定 / event binding
+  guard.js                            # 守护测试自动执行脚本 / guard-test runner
 skills/eng-vibe/
   SKILL.md                            # 六步工作流主文档 / main workflow
   references/
@@ -54,7 +70,7 @@ skills/eng-vibe/
 
 ## Roadmap
 
-- [ ] 升级为 Claude Code plugin:打包 reviewer 子代理 + 守护 hooks(编辑后自动跑守护测试)
+- [x] 升级为 Claude Code plugin:打包 reviewer 子代理 + 守护 hooks(编辑后自动跑守护测试)
 - [ ] 配套 template repository:预置守护测试样例、CI 配置的起手仓库
 - [ ] 守护测试代码样例库(状态机字面量扫描、共享副本一致性校验)
 

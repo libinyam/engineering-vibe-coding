@@ -1,0 +1,14 @@
+{
+  "name": "eng-vibe-marketplace",
+  "owner": {
+    "name": "libinyam",
+    "url": "https://github.com/libinyam"
+  },
+  "plugins": [
+    {
+      "name": "eng-vibe",
+      "source": "./",
+      "description": "Engineering-grade vibe coding: 6-step workflow skill + adversarial reviewer subagent + guard-test hook"
+    }
+  ]
+}

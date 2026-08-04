@@ -24,7 +24,7 @@ A Claude Code skill that pushes vibe coding from "a demo that runs" to "a produc
 **项目级(推荐,随仓库共享给协作者)/ Per-project (recommended):**
 
 ```bash
-git clone https://github.com/<your-username>/engineering-vibe-coding.git
+git clone https://github.com/libinyam/engineering-vibe-coding.git
 mkdir -p .claude/skills
 cp -r engineering-vibe-coding/skills/eng-vibe .claude/skills/
 ```

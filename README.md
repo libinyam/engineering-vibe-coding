@@ -1,5 +1,7 @@
 # eng-vibe — Engineering-Grade Vibe Coding Skill
 
+[![CI](https://github.com/libinyam/engineering-vibe-coding/actions/workflows/ci.yml/badge.svg)](https://github.com/libinyam/engineering-vibe-coding/actions/workflows/ci.yml)
+
 一个 Claude Code skill,把 vibe coding 从"能跑的 demo"推向"敢上线收钱的可交付项目"。
 
 A Claude Code skill that pushes vibe coding from "a demo that runs" to "a product you'd charge money for."
@@ -67,13 +69,18 @@ cp -r engineering-vibe-coding/skills/eng-vibe ~/.claude/skills/
 .claude-plugin/
   plugin.json                         # plugin 清单 / plugin manifest
   marketplace.json                    # 让本仓库可被 /plugin marketplace add / makes this repo installable
+.github/workflows/ci.yml              # CI:测试 + manifest 校验 + lint / tests + manifest checks + lint
 agents/
   eng-vibe-reviewer.md                # 对抗审查子代理 / adversarial reviewer subagent
 hooks/
   hooks.json                          # PostToolUse 事件绑定 / event binding
   guard.js                            # 守护测试自动执行脚本 / guard-test runner
   guard.test.js                       # guard.js 全分支测试 / black-box tests for guard.js
-package.json                          # 测试入口 / test entrypoint
+tests/
+  manifest.test.js                    # manifest/跨文件引用守护 / manifest & cross-reference guard tests
+eslint.config.js                      # lint 基线 / lint baseline
+.editorconfig                         # 格式基线 / format baseline
+package.json                          # npm test / npm run lint 入口 / entrypoints
 skills/eng-vibe/
   SKILL.md                            # 六步工作流主文档 / main workflow
   references/
@@ -85,8 +92,11 @@ skills/eng-vibe/
 ## 开发 / Development
 
 ```bash
-npm test   # 零依赖,Node ≥18 / zero dependencies, Node ≥18
+npm test        # 19 个用例:guard 全分支 + manifest 守护 / 19 cases: guard branches + manifest guards
+npm run lint    # eslint / eslint
 ```
+
+运行时零依赖,需 Node ≥18(lint 仅 devDependencies)/ Zero runtime dependencies, Node ≥18 (eslint is devDependency only).
 
 ## Roadmap
 

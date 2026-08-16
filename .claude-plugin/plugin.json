@@ -1,6 +1,6 @@
 {
   "name": "eng-vibe",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Engineering-grade vibe coding: 6-step workflow skill + adversarial reviewer subagent + guard-test hook. 让 AI 写不出坏代码的环境:人负责判断和验收,机器负责生成和守门。",
   "author": {
     "name": "libinyam",

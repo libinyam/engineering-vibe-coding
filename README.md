@@ -36,9 +36,21 @@ A Claude Code skill that pushes vibe coding from "a demo that runs" to "a produc
 |---|---|---|
 | 知识 / Knowledge | `eng-vibe` skill | 相关任务时自动加载六步工作流 / auto-loads the 6-step workflow |
 | 审查 / Review | `eng-vibe-reviewer` subagent | 每完成一个 issue 大小的功能,独立上下文对抗审查 / adversarial review in an isolated context after each issue-sized change |
-| 强制 / Enforcement | guard hook | 每次文件编辑后自动跑守护测试,红了直接拦截并强制修复 / runs guard tests after every file edit; failures block and bounce back |
+| 强制 / Enforcement | guard hook | 每次文件编辑后自动跑守护测试,红了直接拦截并强制修复;需一次 `--trust` 授权 / runs guard tests after every file edit; failures block and bounce back; requires one-time `--trust` |
 
-守护 hook 的接入方式:项目根目录建 `eng-vibe.config.json`,写 `{"guardCommand": "node test/guard.test.js"}`(或 package.json scripts 里定义 `guard` / `test:guard`)。没有配置的项目 hook 静默放行,零打扰。/ To wire the guard hook, add `eng-vibe.config.json` with a `guardCommand`, or a `guard` / `test:guard` npm script. Projects without one are silently skipped.
+守护 hook 的接入方式:项目根目录建 `eng-vibe.config.json`,写 `{"guardCommand": "node test/guard.test.js"}`(或 package.json scripts 里定义 `guard` / `test:guard`)。首次编辑时 hook 会拦截并显示授权命令——出于安全,hook 不自动执行未信任项目的任何命令,需由你**本人**在项目根目录执行一次 `node <plugin>/hooks/guard.js --trust`(不想启用则执行 `--untrust`,该项目恢复静默放行)。没有配置的项目 hook 静默放行,零打扰。/ To wire the guard hook, add `eng-vibe.config.json` with a `guardCommand`, or a `guard` / `test:guard` npm script. On the first edit the hook blocks and shows a trust command — nothing runs until **you** run `node <plugin>/hooks/guard.js --trust` yourself in the project root (`--untrust` to permanently skip). Projects without one are silently skipped.
+
+### 安全与信任模型 / Security & Trust Model
+
+守护命令以你的用户权限运行,因此默认不自动执行,需显式授权一次:
+
+Guard commands run with your user privileges, so nothing executes until you explicitly grant trust once:
+
+1. 信任记录保存在 `~/.claude/eng-vibe-trust.json`(你的主目录)——仓库自身无法替克隆者授予信任 / Trust lives in your home directory; a repo can never grant trust on behalf of its cloners.
+2. 授权/撤销由用户本人在项目根目录执行 `--trust` / `--untrust`,不要让 AI 代跑 / Run `--trust` / `--untrust` yourself; never let the AI run it for you in a repo you don't trust.
+3. 信任即全权:守护命令等同于该项目里的任意构建脚本 / Trusting a project means trusting its build scripts.
+
+详见 [SECURITY.md](SECURITY.md) / See [SECURITY.md](SECURITY.md).
 
 **方式二:只装 skill(轻量)/ Skill only (lightweight):**
 

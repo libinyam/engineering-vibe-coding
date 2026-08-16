@@ -37,7 +37,7 @@ description: Engineering-grade vibe coding workflow. Use when starting a new pro
 
 优先级:先把**最贵的约定**(违反后返工成本最高的:状态机、权限边界、幂等键)守住,再逐步覆盖。每写一条守护,故意违反一次,亲眼看到它红,才算完成。
 
-守护测试就位后,把它接入自动闸门:在项目根目录建 `eng-vibe.config.json` 写入 `{"guardCommand": "<快速守护命令>"}`(或在 package.json scripts 里定义 `guard`)。若本 skill 以 plugin 形式安装,每次文件编辑后守护 hook 会自动执行该命令,红了立刻拦截。守护命令只跑约定扫描类测试,须在几秒内完成。
+守护测试就位后,把它接入自动闸门:在项目根目录建 `eng-vibe.config.json` 写入 `{"guardCommand": "<快速守护命令>"}`(或在 package.json scripts 里定义 `guard`)。若本 skill 以 plugin 形式安装,首次编辑时守护 hook 会拦截并显示授权命令——出于安全,hook 不自动执行未信任项目的命令;把 `--trust` 命令转给用户**人工**执行一次即完成接入(用户不想启用则 `--untrust` 静默跳过),之后每次文件编辑自动执行守护命令,红了立刻拦截。守护命令只跑约定扫描类测试,须在几秒内完成。
 
 ## 第 3 步:小步迭代,每步闭环
 

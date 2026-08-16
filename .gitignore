@@ -1,0 +1,7 @@
+# 个人本地配置,不入库(Claude Code 约定:settings.local.json 属于个人环境)
+.claude/settings.local.json
+CLAUDE.local.md
+
+# OS
+.DS_Store
+Thumbs.db

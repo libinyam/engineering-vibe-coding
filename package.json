@@ -7,6 +7,10 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node --test hooks/guard.test.js"
+    "test": "node --test hooks/guard.test.js tests/manifest.test.js",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "eslint": "^9.9.0"
   }
 }

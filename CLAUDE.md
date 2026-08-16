@@ -6,7 +6,7 @@
 
 1. **版本同步**：任何功能性改动（skill/references 内容、agent、hook 行为）必须同步 bump `.claude-plugin/plugin.json` 的 `version`；纯 README/LICENSE 改动不 bump。
 2. **hook 静默契约**：`hooks/guard.js` 在目标项目既无 `eng-vibe.config.json` 也无 `guard`/`test:guard` npm script 时，必须零输出、exit 0（README 承诺的"零打扰"）。另外它有信任门槛（见 SECURITY.md）：未信任项目不执行命令只提示，`--untrust` 过的项目静默放行；信任记录在 `~/.claude/eng-vibe-trust.json`，测试时必须用 `ENG_VIBE_TRUST_STORE` 指向临时文件隔离。改 hook 后必须在「无配置」「未信任」「已信任」三种目录下各实际跑一次验证。
-3. **跨文件引用一致性**：以下名称被多处引用，改任何一端必须 grep 全仓库同步：
+3. **跨文件引用一致性**：以下名称被多处引用，改任何一端必须 grep 全仓库同步（机器守护：`tests/manifest.test.js`，挂了 CI 会红）：
    - 子代理名 `eng-vibe-reviewer`：agents/ 文件名 + SKILL.md 第 5 步 + README
    - 配置名 `eng-vibe.config.json` 与字段 `guardCommand`：hooks/guard.js + SKILL.md 第 2 步 + README
 4. **双语规范**：README.md 中英对照，改一种语言必须同步另一种；skill 和模板正文只用中文。
@@ -17,3 +17,4 @@
 - 改六步工作流 → `skills/eng-vibe/SKILL.md`（检查引用的 references/ 是否需同步）→ bump version
 - 改守护 hook → `hooks/guard.js` → `npm test` 全绿(新增分支必须配对应用例,故意违反一次看它红)→ bump version
 - 加 reference 文档 → `skills/eng-vibe/references/` + SKILL.md 加链接 + README 结构树补一行（中英双语）
+- 改 CI / lint → `.github/workflows/ci.yml` / `eslint.config.js` → 本地 `npm test && npm run lint` 绿

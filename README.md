@@ -72,12 +72,20 @@ agents/
 hooks/
   hooks.json                          # PostToolUse 事件绑定 / event binding
   guard.js                            # 守护测试自动执行脚本 / guard-test runner
+  guard.test.js                       # guard.js 全分支测试 / black-box tests for guard.js
+package.json                          # 测试入口 / test entrypoint
 skills/eng-vibe/
   SKILL.md                            # 六步工作流主文档 / main workflow
   references/
     constitution-template.md          # CLAUDE.md 宪法模板 / constitution template
     review-checklist.md               # 对抗审查清单 / adversarial review checklist
     ship-checklist.md                 # 交付清单 / ship checklist
+```
+
+## 开发 / Development
+
+```bash
+npm test   # 零依赖,Node ≥18 / zero dependencies, Node ≥18
 ```
 
 ## Roadmap

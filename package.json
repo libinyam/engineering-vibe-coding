@@ -1,0 +1,12 @@
+{
+  "name": "engineering-vibe-coding",
+  "private": true,
+  "description": "eng-vibe plugin 源码仓库:skill + reviewer 子代理 + 守护 hook",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test hooks/guard.test.js"
+  }
+}

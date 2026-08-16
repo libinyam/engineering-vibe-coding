@@ -15,5 +15,5 @@
 ## 常见改动菜谱
 
 - 改六步工作流 → `skills/eng-vibe/SKILL.md`（检查引用的 references/ 是否需同步）→ bump version
-- 改守护 hook → `hooks/guard.js` → 在"有配置"和"无配置"两种目录各验证一次 → bump version
+- 改守护 hook → `hooks/guard.js` → `npm test` 全绿(新增分支必须配对应用例,故意违反一次看它红)→ bump version
 - 加 reference 文档 → `skills/eng-vibe/references/` + SKILL.md 加链接 + README 结构树补一行（中英双语）
